@@ -39,5 +39,19 @@ case $1 in
        >> config/application.rb
       echo '  end' >> config/application.rb
       echo 'end' >> config/application.rb
+
+      rails generate controller StaticPages home help about contacts\
+       --no-test-framework
+      cd ../CreateRailsRepo
+      cp custom.css.scss ../$1/app/assets/stylesheets/custom.css.scss
+      cp about.html.erb contacts.html.erb help.html.erb home.html.erb\
+       ../$1/app/views/static_pages
+      cp application.html.erb ../$1/app/views/layouts
+      cp application_helper.rb ../$1/app/helpers
+      cp *.jpg ../$1/app/assets/images
+      cd ../$1
+      rails generate integration_test StaticPages
+      cd ../CreateRailsRepo
+      cp static_pages_spec.rb ../$1/spec/requests
       ;;
 esac
