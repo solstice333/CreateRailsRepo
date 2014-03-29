@@ -8,7 +8,7 @@ In terminal,
 
 ```
 $ git clone https://github.com/solstice333/CreateRailsRepo.git
-$ cd CreateRailsRepo
+$ cd CreateRailsRepo   #Note you NEED to cd to CreateRailsRepo
 $ ./railsNew.sh [ name of repo starting with an uppercase character e.g. Foo ]
-$ cd ..
+$ cd ..  #Rails repo should now be in the directory above
 ```
