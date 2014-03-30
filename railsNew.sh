@@ -10,19 +10,23 @@ case $1 in
       echo " rspec installation will fail"
       ;;
    *)
+      # create new rails repo
       cd ..
       rails new $1 --skip-test-unit
 
+      # Load Gemfile and secret_token.rb
       cp CreateRailsRepo/gemfileBackup $1/Gemfile
       cp CreateRailsRepo/secretTokenBackup.rb\
        $1/config/initializers/secret_token.rb
-
       echo -e "\n$1::Application.config.secret_key_base = secure_token"\
        >> $1/config/initializers/secret_token.rb 
+
+      # update and install gems excluding production group
       cd $1
       bundle update
       bundle install --without production
 
+      # add rspec, spork, guard - testing env
       rails generate rspec:install
       cp ../CreateRailsRepo/specHelperBackup.rb spec/spec_helper.rb
       guard init rspec
@@ -31,6 +35,7 @@ case $1 in
       guard init spork
       cp ../CreateRailsRepo/guardfileBackup Guardfile
 
+      # add assets pipeline to config/application.rb
       filesize=$(stat -c %s config/application.rb)
       truncateSize=$(($filesize - 10))
       truncate -s $truncateSize config/application.rb      
@@ -39,6 +44,7 @@ case $1 in
       echo '  end' >> config/application.rb
       echo 'end' >> config/application.rb
 
+      # Load the routes, controllers, views, assets, tests
       rails generate controller StaticPages home help about contact\
        --no-test-framework
       cd ../CreateRailsRepo
@@ -55,5 +61,10 @@ case $1 in
       rails generate integration_test StaticPages
       cd ../CreateRailsRepo
       cp static_pages_spec.rb ../$1/spec/requests
+
+
+      echo "$1::Application.routes.draw do" > ../$1/config/routes.rb
+      cat routes.rb >> ../$1/config/routes.rb
+
       ;;
 esac
