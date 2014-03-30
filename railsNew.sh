@@ -25,7 +25,6 @@ case $1 in
 
       rails generate rspec:install
       cp ../CreateRailsRepo/specHelperBackup.rb spec/spec_helper.rb
-
       guard init rspec
       spork --bootstrap
       echo "--drb" >> .rspec
@@ -40,13 +39,16 @@ case $1 in
       echo '  end' >> config/application.rb
       echo 'end' >> config/application.rb
 
-      rails generate controller StaticPages home help about contacts\
+      rails generate controller StaticPages home help about contact\
        --no-test-framework
       cd ../CreateRailsRepo
       cp custom.css.scss ../$1/app/assets/stylesheets/custom.css.scss
-      cp about.html.erb contacts.html.erb help.html.erb home.html.erb\
+      cp about.html.erb contact.html.erb help.html.erb home.html.erb\
        ../$1/app/views/static_pages
       cp application.html.erb ../$1/app/views/layouts
+      cp _shim.html.erb ../$1/app/views/layouts
+      cp _header.html.erb ../$1/app/views/layouts
+      cp _footer.html.erb ../$1/app/views/layouts
       cp application_helper.rb ../$1/app/helpers
       cp *.jpg ../$1/app/assets/images
       cd ../$1
