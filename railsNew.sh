@@ -61,10 +61,9 @@ case $1 in
       rails generate integration_test StaticPages
       cd ../CreateRailsRepo
       cp static_pages_spec.rb ../$1/spec/requests
-
-
+      mkdir ../$1/spec/support
+      cp utilities.rb ../$1/spec/support
       echo "$1::Application.routes.draw do" > ../$1/config/routes.rb
       cat routes.rb >> ../$1/config/routes.rb
-
       ;;
 esac
