@@ -57,13 +57,23 @@ case $1 in
       cp _footer.html.erb ../$1/app/views/layouts
       cp application_helper.rb ../$1/app/helpers
       cp *.jpg ../$1/app/assets/images
+
       cd ../$1
       rails generate integration_test StaticPages
       cd ../CreateRailsRepo
       cp static_pages_spec.rb ../$1/spec/requests
       mkdir ../$1/spec/support
       cp utilities.rb ../$1/spec/support
+
+      cd ../$1
+      rails generate controller Users new --no-test-framework
+      cd ../CreateRailsRepo
       echo "$1::Application.routes.draw do" > ../$1/config/routes.rb
       cat routes.rb >> ../$1/config/routes.rb
+      cd ../$1
+      rails generate integration_test UserPages
+      cd ../CreateRailsRepo
+      cp user_pages_spec.rb ../$1/spec/requests
+      cp new.html.erb ../$1/app/views/users
       ;;
 esac
