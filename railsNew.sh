@@ -39,6 +39,7 @@ case $1 in
       filesize=$(stat -c %s config/application.rb)
       truncateSize=$(($filesize - 10))
       truncate -s $truncateSize config/application.rb      
+      echo '  I18n.enforce_available_locales = true'
       echo '  config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)'\
        >> config/application.rb
       echo '  end' >> config/application.rb
